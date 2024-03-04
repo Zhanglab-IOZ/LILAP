@@ -2,6 +2,8 @@
 Low-input Low-cost amplification-free library-production method for PacBio Long-read sequencing
 
 All the codes for LILAP are available in the 'code.sh' file. The installation of the software should be conducted with the correct versions specified in the accompanying paper.
+The Snakemake file integrates automatic workflows for genome assembly, polishing, evaluation, SV calling, etc., with test data for ISO1-1 available in the snakemake/data directory. If errors occur, run commands individually, as they may stem from version differences of Snakemake or the programs used.
+
 
 Links for the single-fly genome (and Wolbachia) assemblies:
 
