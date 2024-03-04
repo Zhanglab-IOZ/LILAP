@@ -1,0 +1,20 @@
+SAMPLES = ["C01"]
+
+include: "rules/hifiasm.evalutation.smk"
+include: "rules/automatic_polsih.smk"
+include: "rules/variation_calling.smk"
+
+rule all:
+    input:
+        expand("results/summary/{sample}.ccs.fasta.readlength", sample=SAMPLES),
+        expand("results/asm/{sample}.ccs.asm.p_ctg.fa", sample=SAMPLES),
+        expand("results/asmquast/{sample}.ccs_quast_LG/report.tsv", sample=SAMPLES),
+        expand("results/asm/{sample}.ccs.BUSCO", sample=SAMPLES),
+        expand("results/asm/{sample}.ccs.merqury/{sample}.ccs.hifiasm.p", sample=SAMPLES),
+        expand("results/summary/{sample}.zmw.count.out.asm.mapq_more_0.out1", sample=SAMPLES),
+
+        expand("results/polish/{sample}.ccs.asm.p_ctg.fa.merfin.out.polish.fa", sample=SAMPLES),
+
+        expand("results/SV/sv.{sample}.ccs.hifiasm.p.filter0", sample=SAMPLES)
+
+
