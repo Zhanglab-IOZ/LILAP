@@ -1,5 +1,5 @@
 my %all=();
-open FILE,"sv.C01.ccs.hifiasm.txt";
+open FILE, $ARGV[0];
 while(<FILE>){
     chomp $_;
     my @line=split/\t/,$_;
@@ -11,7 +11,7 @@ while(<FILE>){
 }
 close FILE;
 
-open OUT,">sv.C01.filter1";
+open OUT, ">$ARGV[1]" ;
 for my $sv1(sort keys %all){
     for my $sv2(sort keys %all){
         if ($sv1 ne $sv2 && $all{$sv1}{chr} ne 'no' && $all{$sv2}{chr} ne 'no'){
@@ -27,3 +27,5 @@ for my $sv1(sort keys %all){
     
 }
 close OUT;
+
+
