@@ -66,7 +66,7 @@ rule racon:
         out_fa="results/polish/{sample}.asm.p_ctg.racon.fa", 
         out_vcf="results/polish/{sample}.asm.p_ctg.racon.fa.vcf"
     shell:
-        "/rd/caiya/softwares/racon_liftover/build/bin/racon -t 20 {input.fasta} {input.sam} {input.fa} -L > {output.out_fa}"
+        "/path/to/racon_liftover/build/bin/racon -t 20 {input.fasta} {input.sam} {input.fa} -L > {output.out_fa}"
 
 rule jellyfish_count:
     input:
