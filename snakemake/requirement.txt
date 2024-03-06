@@ -12,7 +12,7 @@ winnowmap==2.03
 pb-falconc==1.13.1
 racon==1.6.0
 jellyfish==2.2.10
-GenomeScope
+genomescope2
 merfin==1.1
 bcftools==1.14
 mummer==4.0.0
