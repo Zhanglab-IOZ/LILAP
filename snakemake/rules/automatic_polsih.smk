@@ -2,9 +2,11 @@ rule meryl_count_1DB_fa:
     input:
         p_ctg_fa="results/asm/{sample}.ccs.asm.p_ctg.fa"
     output:
+        "results/polish/{sample}_lDB/0x000000.merylData"
+    params:
         "results/polish/{sample}_lDB"
     shell:
-        "meryl count k=15 {input.p_ctg_fa} output {output}"
+        "meryl count k=15 {input.p_ctg_fa} output {params}"
 
 rule meryl_count_1DB_fasta:
     input:
