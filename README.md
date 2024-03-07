@@ -23,11 +23,12 @@ All PacBio HiFi sequencing data generated in this study are available at the NCB
 * Snakemake were prepared for genome assembly, evaluation, automatic polishing, structural variation detecting, etc.
 
 ## Dependencies
-We strongly encourage you to intall the dependencies via mamba instead of conda:
+We strongly encourage you to install dependencies via mamba instead of conda, if conda takes a long time to solve the environment:
 To install mamba, please fellow:
 ```
    conda install -c conda-forge mamba
 ```
+
 
 - Snakemake v8.0.0
 - Hifiasm v0.12
