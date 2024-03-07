@@ -19,7 +19,10 @@ All PacBio HiFi sequencing data generated in this study are available at the NCB
 
 
 ## Usage
-Git clone all the codes, and run the following codes on the Linux server. The necessary software for this research is detailed in the "requirements.txt" file.
+* Git clone all the codes, and run the following codes on the Linux server. The necessary software for this research is detailed in the "requirements.txt" file.
+* Snakemake were prepared for genome assembly, evaluation, automatic polishing, structural variation detecting, etc.
+
+
 
 ## data for testing
 Test the assembly code using both ISO1-1 and ISO1-2 ccs reads with the provided instructions.
