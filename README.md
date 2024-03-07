@@ -5,15 +5,15 @@ All the codes for LILAP are available in the 'code.sh' file. The installation of
 The Snakemake file integrates automatic workflows for genome assembly, polishing, evaluation, SV calling, etc., with test data for ISO1-1 available in the snakemake/data directory. If errors occur, run commands individually, as they may stem from version differences of Snakemake or the programs used.
 
 
-Links for the single-fly genome (and Wolbachia) assemblies:
+Google Dirve Links for the single-fly genome (and Wolbachia) assemblies (after polishing):
 
-ISO1-1: https://drive.google.com/file/d/1-BD99hcTxMuByG2PVFB0xjcttYHY1gKu/view?usp=drive_link
+ISO1-1: [Google Drive Link](https://drive.google.com/file/d/1-BD99hcTxMuByG2PVFB0xjcttYHY1gKu/view?usp=drive_link)
 
-ISO1-2: https://drive.google.com/file/d/1Fi6L-yJmRprQ_virCgi18QCLBRF7HUZJ/view?usp=drive_link
+ISO1-2: [Google Drive Link](https://drive.google.com/file/d/1Fi6L-yJmRprQ_virCgi18QCLBRF7HUZJ/view?usp=drive_link)
 
-wISO1-1: https://drive.google.com/file/d/1f2nLqUaaNm7orrgbCTvWwSh3s43uYKLr/view?usp=drive_link
+wISO1-1: [Google Drive Link](https://drive.google.com/file/d/1f2nLqUaaNm7orrgbCTvWwSh3s43uYKLr/view?usp=drive_link)
 
-wISO1-2: https://drive.google.com/file/d/1IjXDbNlbdbVfbI8CDNQcFazp7PgJY5Yb/view?usp=drive_link
+wISO1-2: [Google Drive Link](https://drive.google.com/file/d/1IjXDbNlbdbVfbI8CDNQcFazp7PgJY5Yb/view?usp=drive_link)
 
 All PacBio HiFi sequencing data generated in this study are available at the NCBI Sequence Read Archive database (https://www.ncbi.nlm.nih.gov/sra) under the accession numbers PRJNA983717.
 
