@@ -22,6 +22,36 @@ All PacBio HiFi sequencing data generated in this study are available at the NCB
 * Git clone all the codes, and run the following codes on the Linux server. The necessary software for this research is detailed in the "requirements.txt" file.
 * Snakemake were prepared for genome assembly, evaluation, automatic polishing, structural variation detecting, etc.
 
+## Dependencies
+We strongly encourage you to intall the dependencies via mamba instead of conda:
+To install mamba, please fellow:
+```
+   conda install -c conda-forge mamba
+```
+
+- Snakemake v8.0.0
+- Hifiasm v0.12
+- Python v3.11.6
+- Perl v5.32.1
+- minimap2 v2.24-r1122
+- samtools v1.17
+- quast v5.2.0
+- BUSCO v5.4.2
+- meryl v2.3
+- merqury v1.3
+- winnowmap v2.03
+- pb-falconc v1.13.1
+- racon liftover branch v1.6.0
+- jellyfish v2.2.10
+- GenomeScope v2.0
+- merfin v1.1
+- bcftools v1.14
+- mummer v4.0.0
+- lastz v1.04.22
+- svmu
+
+
+
 
 
 ## data for testing
