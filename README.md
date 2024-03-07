@@ -49,9 +49,17 @@ To install mamba, please fellow:
 - mummer v4.0.0
 - lastz v1.04.22
 - svmu
-
-
-
+- minimap2 v2-2.24
+- bwa v0.7.17
+- sniffiles2
+- flye v2.9
+- blast
+- bedtools
+- non-B-gfa
+- pav v1.2.0
+- seqkit=2.4.0
+- diamond
+- blobtools
 
 
 ## data for testing
