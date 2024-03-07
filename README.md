@@ -381,3 +381,14 @@ blobtools create \
 blobtools view --remote C01
 ```
 
+
+## Citation
+
+To cite this repo in publications, please use
+
+> Unpublished
+
+
+## Contact
+
+For questions or support, please contact caiyingao21@ioz.ac.cn.
