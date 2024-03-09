@@ -28,10 +28,18 @@ rule svmu:
         query="results/asm/{sample}.ccs.asm.p_ctg.fa", 
         lastz="results/SV/dm62{sample}_lastz.txt"
     output:
-        prefix="results/SV/{sample}.ccs.hifiasm.p",
         sv="results/SV/sv.{sample}.ccs.hifiasm.p.txt"
+    params:
+        prefix="{sample}.ccs.hifiasm.p",
+        delta="dm62{sample}.delta",
+        lastz="dm62{sample}_lastz.txt",
+        ref="../../data/dm6.fa",
+        query="../asm/{sample}.ccs.asm.p_ctg.fa"
     shell:
-        "svmu {input.delta} {input.ref} {input.query} h {input.lastz} {output.prefix}"
+        """
+        cd results/SV
+        svmu {params.delta} {params.ref} {params.query} h {params.lastz} {params.prefix}
+        """
 
 # Rule for running the Perl script for SV results filtering
 rule sv_results_filter:
