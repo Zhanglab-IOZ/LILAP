@@ -54,7 +54,7 @@ All PacBio HiFi sequencing data generated in this study are available at the NCB
   - [Contact](#contact)
 
 
-## data for testing
+## Data for testing
 Test the assembly code using both ISO1-1 and ISO1-2 ccs reads with the provided instructions.
 
 For SVs and SNPs, utilize both the single-fly and Wolbachia genome assemblies. Examine the anticipated structural variation results in the sv.C01.ccs.hifiasm.txt file. It's important to note that some raw results necessitate additional manual verification, as elaborated in the manuscript. The complete pipeline, including the manual checking process, requires a few days for the analysis of the single-fly genome assembly.
