@@ -92,6 +92,7 @@ Please put the demo data in to the data/ directory
 All the output file will located in the "results" directory:
 
 Here are parts of the major results and their positions:
+```
 results
 ├── asm
 │   ├── C01.ccs.asm.a_ctg.gfa # hifiasm alternative assembly result (.gfa file)
