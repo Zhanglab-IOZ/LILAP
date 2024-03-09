@@ -18,9 +18,54 @@ wISO1-2: [Google Drive Link](https://drive.google.com/file/d/1IjXDbNlbdbVfbI8CDN
 All PacBio HiFi sequencing data generated in this study are available at the NCBI Sequence Read Archive database (https://www.ncbi.nlm.nih.gov/sra) under the accession numbers PRJNA983717.
 
 
-## Usage
-* Git clone all the codes, and run the following codes on the Linux server. The necessary software for this research is detailed in the "requirements.txt" file.
-* Snakemake were prepared for genome assembly, evaluation, automatic polishing, structural variation detecting, etc.
+
+## Outline
+- [LILAP](#lilap)
+  - [Outline](#outline)
+  - [data for testing](#data-for-testing)
+  - [Dependencies](#dependencies)
+  - [Usage](#usage)
+    - [ccs read length distribution](#ccs-read-length-distribution)
+    - [Tn5 insertion site bias](#tn5-insertion-site-bias)
+    - [ccs consensus](#ccs-consensus)
+    - [relative depth](#relative-depth)
+    - [GC bias](#gc-bias)
+    - [assembly](#assembly)
+      - [downsampling](#downsampling)
+      - [hifiasm](#hifiasm)
+      - [quast](#quast)
+      - [BUSCO v5.4.2](#busco-v542)
+      - [merqury calculate qv](#merqury-calculate-qv)
+        - [calculate best kmer size](#calculate-best-kmer-size)
+        - [build k-mer dbs with meryl](#build-k-mer-dbs-with-meryl)
+        - [calculate qv by merqury](#calculate-qv-by-merqury)
+    - [polishing](#polishing)
+    - [Y chromosome identification](#y-chromosome-identification)
+    - [SV calling](#sv-calling)
+    - [non-B DNA motif detection](#non-b-dna-motif-detection)
+    - [SNP calling](#snp-calling)
+      - [snpEff](#snpeff)
+      - [get genome background bed](#get-genome-background-bed)
+      - [verification and vaf filter of SNPs](#verification-and-vaf-filter-of-snps)
+      - [MNP detecting](#mnp-detecting)
+    - [Wolbachia \& other bacteria](#wolbachia--other-bacteria)
+      - [blobtools](#blobtools)
+  - [Citation](#citation)
+  - [Contact](#contact)
+
+
+## data for testing
+Test the assembly code using both ISO1-1 and ISO1-2 ccs reads with the provided instructions.
+
+For SVs and SNPs, utilize both the single-fly and Wolbachia genome assemblies. Examine the anticipated structural variation results in the sv.C01.ccs.hifiasm.txt file. It's important to note that some raw results necessitate additional manual verification, as elaborated in the manuscript. The complete pipeline, including the manual checking process, requires a few days for the analysis of the single-fly genome assembly.
+
+You can also download our demo data of ISO1-1 downsize data to test the entire snakemake pipeline from Google Drive: 
+
+   * D.melanogaster release 6 reference genome: [Google Drive Link](https://drive.google.com/file/d/1auUP206WUfA-Dba0Td-Fbr_1kdoAbt1M/view?usp=sharing)
+   
+   * C01.ccs.fasta: [Google Drive Link](https://drive.google.com/file/d/1hxBG3qVU1YBEDHVhvTciWc8GoN-eOCjO/view?usp=sharing)
+
+   * C01.subreads.fasta.names (used for ccs identity analysis): [Google Drive Link](https://drive.google.com/file/d/1J7NSVweBkCzcdeTVnGGOUM9cw_hkT2D_/view?usp=sharing)
 
 ## Dependencies
 We strongly encourage you to install dependencies via mamba instead of conda, if conda takes a long time to solve the environment:
@@ -28,7 +73,6 @@ To install mamba, please fellow:
 ```
    conda install -c conda-forge mamba
 ```
-
 
 - Snakemake v8.0.0
 - Hifiasm v0.12
@@ -63,44 +107,9 @@ To install mamba, please fellow:
 - blobtools
 
 
-## data for testing
-Test the assembly code using both ISO1-1 and ISO1-2 ccs reads with the provided instructions.
-
-For SVs and SNPs, utilize both the single-fly and Wolbachia genome assemblies. Examine the anticipated structural variation results in the sv.C01.ccs.hifiasm.txt file. It's important to note that some raw results necessitate additional manual verification, as elaborated in the manuscript. The complete pipeline, including the manual checking process, requires a few days for the analysis of the single-fly genome assembly.
-
-
-## Outline
-- [LILAP](#LILAP)
-  * [code.sh](#codesh)
-    + [ccs reads length distribution](#ccs-reads-length-distribution)
-    + [Tn5 insertion site bias](#tn5-insertion-site-bias)
-    + [ccs concensus](#ccs-concensus)
-    + [relative depth](#relative-depth)
-    + [GC bias](#gc-bias)
-    + [assembly](#assembly)
-      - [downsampling](#downsampling)
-      - [hifiasm](#hifiasm)
-      - [quast](#quast)
-      - [BUSCO v5.4.2](#busco-v542)
-      - [merqury calculate qv](#merqury-calculate-qv)
-        * [calculate best kmer size](#calculate-best-kmer-size)
-        * [build k-mer dbs with meryl](#build-k-mer-dbs-with-meryl)
-        * [calculate qv by merqury](#calculate-qv-by-merqury)
-    + [polish](#polish)
-    + [Y chromosome identification](#y-chromosome-identification)
-    + [SV calling](#sv-calling)
-    + [non-B DNA detection](#non-b-dna-detection)
-    + [SNP calling](#snp-calling)
-      - [snpEff](#snpeff)
-      - [get genome background bed](#get-genome-background-bed)
-      - [verification and vaf filter of SNPs](#verification-and-vaf-filter-of-snps)
-      - [MNP detecting](#mnp-detecting)
-    + [Wolbachia & other bacteria](#wolbachia---other-bacteria)
-      - [blobtools](#blobtools)
-
-
-
-
+## Usage
+* Git clone all the codes, and run the following codes on the Linux server. The necessary software for this research is detailed in the "requirements.txt" file.
+* Snakemake were prepared for genome assembly, evaluation, automatic polishing, structural variation detecting, etc. 
 
 ### ccs read length distribution
 ```sh
