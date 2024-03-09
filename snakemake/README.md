@@ -138,7 +138,7 @@ results
     ├── small.C01.ccs.hifiasm.p.txt # A tab delimited file containing SNPs and small indels that occur within syntenic blocks (or MUMs).
     ├── sv.C01.ccs.hifiasm.p.filter0   # SV list after primary filter from the raw SV list
     └── sv.C01.ccs.hifiasm.p.txt # A tab delimited file that summarizes structural mutations (indels, CNVs, inversions) in the sample genome with respect to the reference genome.
-
+```
 
 ## Citation
 
