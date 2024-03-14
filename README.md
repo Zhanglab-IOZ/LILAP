@@ -10,6 +10,7 @@ Google Dirve Links for the single-fly genome (and Wolbachia) assemblies (after p
 ISO1-1: [Google Drive Link](https://drive.google.com/file/d/1-BD99hcTxMuByG2PVFB0xjcttYHY1gKu/view?usp=drive_link)
 
 ISO1-2: [Google Drive Link](https://drive.google.com/file/d/1Fi6L-yJmRprQ_virCgi18QCLBRF7HUZJ/view?usp=drive_link)
+
 ISO1-Anno: [Google Drive Link](https://drive.google.com/file/d/1ucY16cIAdXfP3UN2EQw01tC6ael7Tk2X/view?usp=drive_link)
 
 wISO1-1: [Google Drive Link](https://drive.google.com/file/d/1f2nLqUaaNm7orrgbCTvWwSh3s43uYKLr/view?usp=drive_link)
