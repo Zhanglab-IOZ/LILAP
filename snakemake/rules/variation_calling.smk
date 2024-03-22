@@ -4,11 +4,12 @@ rule nucmer:
         ref="data/dm6.fa",
         query="results/asm/{sample}.ccs.asm.p_ctg.fa"
     output:
-        prefix="results/SV/dm62{sample}",
         delta="results/SV/dm62{sample}.delta"
     threads: 40
+    params:
+        prefix="results/SV/dm62{sample}"
     shell:
-        "nucmer --threads {threads} --maxmatch --prefix {output.prefix} {input.ref} {input.query}"
+        "nucmer --threads {threads} --maxmatch --prefix {params.prefix} {input.ref} {input.query}"
 
 # Rule for lastz
 rule lastz:
