@@ -8,35 +8,42 @@ rule meryl_count_1DB_fa:
     shell:
         "meryl count k=15 {input.p_ctg_fa} output {params}"
 
+
 rule meryl_count_1DB_fasta:
     input:
-        "results/polish/{sample}_lDB"
+        "results/polish/{sample}_lDB/0x000000.merylData"
     output:
         "results/polish/repetitive_k15_{sample}_lDB.txt"
+    params:
+        "results/polish/{sample}_lDB"
     shell:
-        "meryl print greater-than distinct=0.9998 {input} > {output}"
+        "meryl print greater-than distinct=0.9998 {params} > {output}"
 
 rule meryl_count_fa:
     input:
         p_ctg_fa="results/asm/{sample}.ccs.asm.p_ctg.fa"
     output:
+        "results/polish/meryl/{sample}.asm.p_ctg.meryl/0x000000.merylData"
+    params:
         fa_meryl="results/polish/meryl/{sample}.asm.p_ctg.meryl"
     shell:
-        "meryl count k=19 output {output.fa_meryl} {input.p_ctg_fa}"
+        "meryl count k=19 output {params.fa_meryl} {input.p_ctg_fa}"
 
 rule meryl_count_fasta:
     input:
-        fasta="data/{sample}.ccs.fasta"
+        fasta="data/{sample}.ccs.cut19bp.fasta"
     output:
+        "results/polish/meryl/{sample}.ccs.cut19.meryl/0x000000.merylData"
+    params:
         fasta_meryl="results/polish/meryl/{sample}.ccs.cut19.meryl"
     shell:
-        "meryl count k=19 output {output.fasta_meryl} {input.fasta}"
+        "meryl count k=19 output {params.fasta_meryl} {input.fasta}"
 
 rule winnowmap:
     input:
         fa="results/asm/{sample}.ccs.asm.p_ctg.fa",
         txt="results/polish/repetitive_k15_{sample}_lDB.txt",
-        fasta="data/{sample}.ccs.fasta"
+        fasta="data/{sample}.ccs.cut19bp.fasta"
     output:
         "results/polish/{sample}.ccs.cut19bp.pasm.sam"
     shell:
@@ -61,18 +68,18 @@ rule falconc:
 
 rule racon:
     input:
-        fasta="data/{sample}.ccs.fasta",
+        fasta="data/{sample}.ccs.cut19bp.fasta",
         sam="results/polish/{sample}.ccs.cut19bp.pasm.sort.falconcF104.sam",
         fa="results/asm/{sample}.ccs.asm.p_ctg.fa"
     output:
         out_fa="results/polish/{sample}.asm.p_ctg.racon.fa", 
         out_vcf="results/polish/{sample}.asm.p_ctg.racon.fa.vcf"
     shell:
-        "/path/to/racon_liftover/build/bin/racon -t 20 {input.fasta} {input.sam} {input.fa} -L > {output.out_fa}"
+        "/rd/caiya/softwares/racon_liftover/build/bin/racon -t 20 {input.fasta} {input.sam} {input.fa} -L {output.out_fa} > {output.out_fa}"
 
 rule jellyfish_count:
     input:
-        "data/{sample}.ccs.fasta"
+        "data/{sample}.ccs.cut19bp.fasta"
     output:
         "results/polish/{sample}.ccs.fasta.jf"
     shell:
@@ -103,23 +110,26 @@ rule genomescope2_and_capture_kcov:
 rule merfin_polish:
     input:
         fa="results/asm/{sample}.ccs.asm.p_ctg.fa", 
-        seqmers="results/polish/meryl/{sample}.asm.p_ctg.meryl",
-        readmers="results/polish/meryl/{sample}.ccs.cut19.meryl",
+        seqmers="results/polish/meryl/{sample}.asm.p_ctg.meryl/0x000000.merylData",
+        readmers="results/polish/meryl/{sample}.ccs.cut19.meryl/0x000000.merylData",
         kcov="results/polish/genomescope2_output/{sample}.kcov.txt", 
         vcf="results/polish/{sample}.asm.p_ctg.racon.fa.vcf"
     output:
-        output_prefix="results/polish/{sample}.asm.p_ctg.fa.merfin.out", 
         output_vcf="results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf"
+    params:
+        output_prefix="results/polish/{sample}.asm.p_ctg.fa.merfin.out", 
+        fa_seqmers="results/polish/meryl/{sample}.asm.p_ctg.meryl",
+        fasta_readmers="results/polish/meryl/{sample}.ccs.cut19.meryl"
     shell:
         """
         kcov=$(cat {input.kcov})
         merfin -polish \
         -sequence {input.fa} \
-        -seqmers {input.seqmers} \
-        -readmers {input.readmers} \
+        -seqmers {params.fa_seqmers} \
+        -readmers {params.fasta_readmers} \
         -peak $kcov  \
         -vcf {input.vcf} \
-        -output {output} \
+        -output {params.output_prefix} \
         -threads 20
         """
 
@@ -128,18 +138,13 @@ rule compress_vcf:
     input:
         "results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf"
     output:
-        "results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf.gz"
+        vcfgz="results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf.gz",
+        vcfgzcsi="results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf.gz.csi"
     shell:
-        "bcftools view -Oz {input} > {output}"
-
-# Rule for indexing the compressed VCF file with bcftools index
-rule index_vcf:
-    input:
-        "results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf.gz"
-    output:
-        "results/polish/{sample}.asm.p_ctg.fa.merfin.out.polish.vcf.gz.csi"
-    shell:
-        "bcftools index {input}"
+        """
+        bcftools view -Oz {input} > {output.vcfgz}
+        bcftools index {output.vcfgz}
+        """
 
 # Rule for creating a consensus sequence with bcftools consensus
 rule generate_consensus:
@@ -151,5 +156,63 @@ rule generate_consensus:
     shell:
         "bcftools consensus {input.vcf} -f {input.fa} -H 1 > {output}"
 
+rule quast_evaluation_polish:
+    input:
+        assembly="results/polish/{sample}.ccs.asm.p_ctg.fa.merfin.out.polish.fa"
+    output:
+        quast_report="results/polish/quast/{sample}.ccs.polish.quast_LG/report.tsv"
+    params:
+        reference="data/dm6.fa",  # Adjust the path to your reference genome as necessary
+        output_dir="results/polish/quast/{sample}.ccs.polish.quast_LG"
+    threads: 40
+    shell:
+        """
+        mkdir -p {params.output_dir}
+        quast.py --large -t {threads} -r {params.reference} -o {params.output_dir} {input.assembly}
+        """
 
+# /rd/caiya/softwares/busco-5.4.2/bin/busco
+rule busco_evaluation_polish:
+    input:
+        assembly="results/polish/{sample}.ccs.asm.p_ctg.fa.merfin.out.polish.fa"
+    output:
+        "results/polish/{sample}.ccs.polish.BUSCO/short_summary.specific.diptera_odb10.{sample}.ccs.polish.BUSCO.json"        
+    params:
+        lineage="diptera_odb10",  # Adjust as necessary for your specific organism group
+        output_dir="results/polish/{sample}.ccs.polish.BUSCO"  # Specify the output directory for BUSCO
+    threads: 40
+    shell:
+        """
+        mkdir -p {params.output_dir}
+        busco -i {input.assembly} -l {params.lineage} -o {params.output_dir} -m genome -f
+        """
+
+
+rule meryl_count_polish:
+    input:
+        reads="data/{sample}.ccs.cut19bp.fasta"
+    output:
+        "results/polish/{sample}.ccs.polish.merqury/{sample}.ccs.k18.meryl/0x000000.merylData"
+    params:
+        kmer_db="results/polish/{sample}.ccs.polish.merqury/{sample}.ccs.k18.meryl"
+    shell:
+        """
+        meryl count k=18 output {params.kmer_db} {input.reads}
+        """
+
+rule merqury_evaluation_polish:
+    input:
+        input_merylData="results/polish/{sample}.ccs.polish.merqury/{sample}.ccs.k18.meryl/0x000000.merylData", 
+        p_fa="results/polish/{sample}.ccs.asm.p_ctg.fa.merfin.out.polish.fa"
+    output:
+        qv="results/polish/{sample}.ccs.polish.merqury/{sample}.ccs.hifiasm.p.polish.qv"
+    params:
+        infa="../{sample}.ccs.asm.p_ctg.fa.merfin.out.polish.fa", 
+        kmer_db="results/polish/{sample}.ccs.polish.merqury/{sample}.ccs.k18.meryl", 
+        output_name="{sample}.ccs.hifiasm.p.polish"  # Adjust as necessary
+    shell:
+        """
+        cd results/polish/{wildcards.sample}.ccs.polish.merqury
+        merqury.sh {params.kmer_db} {params.infa} {params.output_name}
+        """
 
