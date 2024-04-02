@@ -1,7 +1,7 @@
 
 # Genome Assembly, Polishing, Evaluation and SV Detection Workflow
 
-This repository contains a Snakemake workflow designed for genome assembly, genome evaluation, and structural variation (SV) detecting. It leverages state-of-the-art tools to provide a streamlined process for handling genomic data, from ccs reads to assembled genomes and their evaluation.
+This repository contains a Snakemake workflow designed for genome assembly, genome evaluation, and structural variation (SV) detection. It leverages state-of-the-art tools to provide a streamlined process for handling genomic data, from ccs reads to assembled genomes and downstream analysis.
 
 ![Image text](https://github.com/Zhanglab-IOZ/LILAP/blob/2e3f13b794069753036001c1b48f7bd7037a98dc/snakemake/snakemake_workflow_graph.png)
 
@@ -11,14 +11,16 @@ This repository contains a Snakemake workflow designed for genome assembly, geno
 
 The workflow is divided into several key stages:
 
-1. **Genome Assembly** - Utilizes tools like hifiasm for assembling genome sequences from PacBio Hi-Fi sequencing data (example in the data: C01.ccs.fasta).
+1. **Genome Assembly** - Utilizes tools like hifiasm for assembling genome sequences from PacBio HiFi sequencing data (example in the data: C01.ccs.fasta).
 2. **Sequencing Evaluation** - Some in-house python and perl scripts to access the ccs reads length distribution, relative sequencing depth, ccs reads QV, etc. 
 3. **Genome Evaluation** - Employs various metrics and tools (quast for reference-based assembly evaluation, BUSCO for single copy orthologs completeness and merqury for reference-free QV evaluation) to assess the quality of the assembled genomes.
-4. **Automatic Polishing** - A state-of-the-art automated polishing tool form Mc Cartney, A.M. 2022 et al. were used in the snakemake, which aim to correct the assembly errors and improve the QV of the genome assembly.
-5. **SV Detection** - Identifies structural variations from the assembled genomes against the reference genome (example prepared in the data/dm6.fa) using a widely used program named svmu (Chakraborty, M. 2018 et al.).
+4. **Automatic Polishing** - A state-of-the-art automated polishing tool form Mc Cartney, A.M. 2022 et al. were used, aiming to correct the assembly errors and improve the QV of the genome assembly.
+5. **SV Detection** - Identifies structural variations from the assembled genomes against the reference genome (example prepared in the data/dm6.fa) employing a widely used program named svmu (Chakraborty, M. 2018 et al.).
 
 
 Each stage is encapsulated in a separate Snakemake rule file, ensuring modularity and ease of use.
+
+The demo data may take several hours to days on a 40-core server or PC.
 
 ## Dependencies
 We strongly encourage you to intall the dependencies via mamba instead of conda:
@@ -59,7 +61,7 @@ To install mamba, please fellow:
    ```
    conda create -n your_env_name -c bioconda --file requirement.txt
    ```
-   However, some program can only download from the software author's github repository like svmu. If you find any questions for installation, please follow the guideline of the software official website.
+   However, some program can be only download from the software author's github repository like svmu. If you find any questions for installation, please follow the guideline of the software official website.
 
 
 ## Usage
@@ -78,7 +80,7 @@ snakemake --cores N --rerun-incomplete
 
 ## Input Data
 
-We prepare a demo data of ISO1-1 downsize data to test the entire pipeline, while you can download them from Google Drive:
+We prepare a demo data of ISO1-1 (data downsized) to test the entire pipeline, while you can download them from Google Drive:
 
    * D.melanogaster release 6 reference genome: [Google Drive Link](https://drive.google.com/file/d/1auUP206WUfA-Dba0Td-Fbr_1kdoAbt1M/view?usp=sharing)
    
@@ -86,10 +88,10 @@ We prepare a demo data of ISO1-1 downsize data to test the entire pipeline, whil
 
    * C01.subreads.fasta.names (used for ccs identity analysis): [Google Drive Link](https://drive.google.com/file/d/1J7NSVweBkCzcdeTVnGGOUM9cw_hkT2D_/view?usp=sharing)
 
-Please put the demo data in to the data/ directory
+Please put the demo data into the data/ directory
 
 ## Output
-All the output file will located in the "results" directory:
+All the output file will be located in the "results" directory:
 
 Here are parts of the major results and their positions:
 ```
